@@ -71,17 +71,21 @@ export default function Hero() {
         </p>
 
         {/* Focus tags */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          {focus.map((tag) => (
+        <div className="flex flex-wrap justify-center gap-3 mb-2 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          {focus.map((tag, i) => (
             <button
               key={tag}
               onClick={() => setActiveTag(tag)}
-              className="px-4 py-1.5 text-sm font-medium text-primary-600 bg-white border border-primary-200 rounded-full shadow-sm hover:bg-primary-50 hover:border-primary-300 transition-colors cursor-pointer"
+              className="px-4 py-1.5 text-sm font-medium text-primary-600 bg-white border border-primary-200 rounded-full shadow-sm hover:bg-primary-50 hover:border-primary-300 hover:shadow-md hover:scale-105 transition-all cursor-pointer animate-nudge"
+              style={{ animationDelay: `${i * 0.15}s` }}
             >
               #{tag}
             </button>
           ))}
         </div>
+        <p className="text-xs text-slate-400 mb-12 animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
+          클릭하여 자세히 보기
+        </p>
 
         {/* CTA */}
         <div className="flex justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.45s' }}>

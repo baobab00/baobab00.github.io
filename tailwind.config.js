@@ -23,6 +23,7 @@ export default {
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
         'fade-in': 'fadeIn 0.6s ease-out forwards',
+        'nudge': 'nudge 4.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite',
       },
       keyframes: {
         fadeInUp: {
@@ -32,6 +33,15 @@ export default {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        nudge: {
+          '0%, 70%': { transform: 'translateY(0)' },
+          '77%': { transform: 'translateY(-8px)' },
+          '82%': { transform: 'translateY(2px)' },
+          '87%': { transform: 'translateY(-4px)' },
+          '91%': { transform: 'translateY(1px)' },
+          '95%': { transform: 'translateY(-1px)' },
+          '100%': { transform: 'translateY(0)' },
         },
       },
     },
