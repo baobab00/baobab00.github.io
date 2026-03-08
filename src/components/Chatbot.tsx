@@ -270,12 +270,22 @@ export default function Chatbot() {
        * ═══════════════════════════════════════════════════ */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.96 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed z-[9998] rounded-xl overflow-hidden flex flex-col terminal-panel sm:bottom-24 sm:right-6 sm:w-[420px] max-sm:bottom-20 max-sm:right-4 max-sm:left-4"
+          <>
+            {/* Backdrop to prevent background scroll on mobile */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9997] sm:hidden"
+              onClick={() => setIsOpen(false)}
+              onTouchMove={(e) => e.preventDefault()}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed z-[9998] rounded-xl overflow-hidden flex flex-col terminal-panel sm:bottom-24 sm:right-6 sm:w-[420px] max-sm:bottom-20 max-sm:right-4 max-sm:left-4"
             style={{
               height: 'min(560px, calc(100vh - 140px))',
             }}
@@ -367,8 +377,8 @@ export default function Chatbot() {
                     <div className="flex items-start gap-1.5 text-[12px] leading-relaxed">
                       <span className="terminal-prompt shrink-0">
                         <span className="terminal-user">visitor</span>
-                        <span className="terminal-at">@</span>
-                        <span className="terminal-host">portfolio</span>
+                        <span className="terminal-at hidden sm:inline">@</span>
+                        <span className="terminal-host hidden sm:inline">portfolio</span>
                         <span className="terminal-colon">:</span>
                         <span className="terminal-path">~</span>
                         <span className="terminal-dollar"> $</span>
@@ -419,8 +429,8 @@ export default function Chatbot() {
               <div className="flex items-center gap-1.5 text-[12px]">
                 <span className="terminal-prompt shrink-0">
                   <span className="terminal-user">visitor</span>
-                  <span className="terminal-at">@</span>
-                  <span className="terminal-host">portfolio</span>
+                  <span className="terminal-at hidden sm:inline">@</span>
+                  <span className="terminal-host hidden sm:inline">portfolio</span>
                   <span className="terminal-colon">:</span>
                   <span className="terminal-path">~</span>
                   <span className="terminal-dollar"> $</span>
@@ -438,6 +448,7 @@ export default function Chatbot() {
               </div>
             </div>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

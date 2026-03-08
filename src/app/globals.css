@@ -607,6 +607,13 @@
   .terminal-ascii {
     font-size: 10px !important;
     line-height: 1.15 !important;
+    overflow: hidden;
+  }
+  .terminal-panel {
+    overflow: hidden !important;
+  }
+  .terminal-input-area {
+    overflow: hidden !important;
   }
 }
 
