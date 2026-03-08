@@ -359,7 +359,17 @@ export default function Chatbot() {
 ╩ ╩╩ ╩╚═╝╝╚╝╩ ╩╩ ╩  ╚═╝╚═╝ ╩`}
                   </pre>
                   <div className="sm:hidden mb-3">
-                    <span className="text-[18px] font-bold tracking-wider" style={{ color: 'var(--terminal-cyan)', fontFamily: "'Consolas', 'SF Mono', monospace" }}>HAENAM BOT</span>
+                    <span
+                      className="text-[20px] font-black tracking-[0.2em] uppercase"
+                      style={{
+                        fontFamily: 'var(--font-display-bot), sans-serif',
+                        color: 'var(--terminal-cyan)',
+                        textShadow: '0 0 10px rgba(125, 207, 255, 0.4), 0 0 20px rgba(125, 207, 255, 0.15)',
+                        letterSpacing: '0.2em',
+                      }}
+                    >
+                      HAENAM BOT
+                    </span>
                   </div>
 
                   <div className="terminal-motd text-[12px] leading-relaxed mb-4 space-y-1">

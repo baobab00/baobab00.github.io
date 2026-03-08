@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono, Orbitron } from 'next/font/google';
 import ThemeProviderWrapper from '@/components/ThemeProviderWrapper';
 import Chatbot from '@/components/Chatbot';
 import './globals.css';
@@ -22,6 +22,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono-nav',
   weight: ['400', '500', '600'],
+  display: 'swap',
+});
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  variable: '--font-display-bot',
+  weight: ['700', '800', '900'],
   display: 'swap',
 });
 
@@ -68,7 +75,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${plusJakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+    <html lang="ko" className={`${plusJakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${orbitron.variable}`} suppressHydrationWarning>
       <body className="min-h-screen">
         <ThemeProviderWrapper>
           {children}
