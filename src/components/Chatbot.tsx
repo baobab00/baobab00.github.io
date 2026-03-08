@@ -361,7 +361,6 @@ export default function Chatbot() {
                   <div className="sm:hidden mb-3">
                     <span className="text-[18px] font-bold tracking-wider" style={{ color: 'var(--terminal-cyan)', fontFamily: "'Consolas', 'SF Mono', monospace" }}>HAENAM BOT</span>
                   </div>
-                  </pre>
 
                   <div className="terminal-motd text-[12px] leading-relaxed mb-4 space-y-1">
                     <p className="terminal-comment"><span className="terminal-hash">#</span> Portfolio AI Assistant</p>
