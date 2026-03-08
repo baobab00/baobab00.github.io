@@ -96,13 +96,6 @@ export default function Chatbot() {
 
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
-    // Lock body scroll when chatbot is open on mobile
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
   // ── Send handler ───────────────────────────────────────

@@ -462,6 +462,8 @@
     var(--terminal-bg);
   color: var(--terminal-text);
   overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── ASCII art ─────────────────────────────────────────── */
