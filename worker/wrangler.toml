@@ -1,0 +1,6 @@
+name = "portfolio-chatbot"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# After first deploy, add your OpenAI API key:
+# npx wrangler secret put OPENAI_API_KEY

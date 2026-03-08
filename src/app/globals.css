@@ -1,0 +1,625 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-body: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --bg-primary: #fafaf9;
+  --bg-card: #ffffff;
+  --bg-muted: #f4f4f5;
+  --text-primary: #18181b;
+  --text-secondary: #3f3f46;
+  --text-muted: #71717a;
+  --text-faint: #a1a1aa;
+  --border-primary: #f4f4f5;
+  --border-secondary: #e4e4e7;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-bg: #eff6ff;
+  --accent-text: #1d4ed8;
+  --about-accent-bar: #c7d2e8;
+}
+
+.dark {
+  --bg-primary: #0a0a0a;
+  --bg-card: #141414;
+  --bg-muted: #1c1c1e;
+  --text-primary: #fafafa;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-faint: #71717a;
+  --border-primary: #27272a;
+  --border-secondary: #3f3f46;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-bg: rgba(59, 130, 246, 0.1);
+  --accent-text: #60a5fa;
+  --about-accent-bar: #3b82f6;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Focus visible ring for keyboard accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-500 rounded-sm;
+  }
+
+  ::selection {
+    @apply bg-blue-100 text-blue-900;
+  }
+
+  .dark ::selection {
+    @apply bg-blue-900 text-blue-100;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300 rounded-full;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-700;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-400;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-600;
+  }
+}
+
+@layer components {
+  /* Badge base styles */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-full;
+  }
+
+  .badge-featured {
+    @apply bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20;
+  }
+
+  .dark .badge-featured {
+    @apply bg-blue-950/50 text-blue-300 ring-blue-400/20;
+  }
+
+  .badge-live {
+    @apply bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20;
+  }
+
+  .dark .badge-live {
+    @apply bg-emerald-950/50 text-emerald-300 ring-emerald-400/20;
+  }
+
+  .badge-opensource {
+    @apply bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20;
+  }
+
+  .dark .badge-opensource {
+    @apply bg-amber-950/50 text-amber-300 ring-amber-400/20;
+  }
+
+  /* Card base */
+  .card {
+    background-color: var(--bg-card);
+    border-color: var(--border-primary);
+    @apply rounded-2xl border shadow-sm;
+  }
+
+  /* Card tap feedback on touch devices */
+  @media (hover: none) {
+    .card:active {
+      @apply scale-[0.98];
+      transition: transform 0.1s ease;
+    }
+  }
+
+  /* Section header */
+  .section-title {
+    @apply text-lg font-semibold tracking-tight;
+    color: var(--text-primary);
+    font-family: var(--font-heading), var(--font-body);
+  }
+
+  /* Profile image soft edge */
+  .profile-soft-edge {
+    mask-image: radial-gradient(circle, black 55%, transparent 72%);
+    -webkit-mask-image: radial-gradient(circle, black 55%, transparent 72%);
+  }
+
+  /* Profile spotlight glow (dark mode only) */
+  .profile-glow {
+    display: none;
+  }
+
+  .dark .profile-glow {
+    display: block;
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.6);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  @keyframes spotlightPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+  }
+
+  /* Bullet point color for resume list items */
+  li[style]::before {
+    background-color: var(--border-secondary) !important;
+  }
+
+  .section-subtitle {
+    @apply text-sm mt-1;
+    color: var(--text-muted);
+  }
+
+  /* Resume section gaps */
+  .resume-section {
+    @apply py-8 first:pt-0;
+  }
+
+  .resume-section + .resume-section {
+    border-top: 1px solid var(--border-primary);
+  }
+}
+
+@layer utilities {
+  /* Project type card accents */
+  .card-featured {
+    @apply border-blue-300/50 shadow-blue-50;
+  }
+
+  .dark .card-featured {
+    @apply border-blue-400/30 shadow-none;
+  }
+
+  .card-featured:hover {
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2), 0 8px 25px -5px rgba(37, 99, 235, 0.1);
+  }
+
+  .card-live {
+    @apply border-emerald-300/60;
+  }
+
+  .dark .card-live {
+    @apply border-emerald-400/30;
+  }
+
+  .card-live:hover {
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2), 0 8px 25px -5px rgba(16, 185, 129, 0.1);
+  }
+
+  .card-opensource {
+    @apply border-amber-300/60;
+  }
+
+  .dark .card-opensource {
+    @apply border-amber-400/30;
+  }
+
+  .card-opensource:hover {
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.2), 0 8px 25px -5px rgba(245, 158, 11, 0.1);
+  }
+
+  /* Live dot indicator */
+  .live-dot {
+    @apply w-2 h-2 rounded-full bg-emerald-500;
+    animation: livePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+  }
+}
+
+/* ── Typewriter Animation ─────────────────────────── */
+
+/* ── Cursor Glow Effect ──────────────────────────── */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.06) 0%,
+    rgba(37, 99, 235, 0.02) 40%,
+    transparent 70%
+  );
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+
+.dark .cursor-glow {
+  background: radial-gradient(
+    circle,
+    rgba(96, 165, 250, 0.10) 0%,
+    rgba(96, 165, 250, 0.04) 40%,
+    transparent 70%
+  );
+}
+
+.typewriter-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1ch;
+  overflow: visible;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--accent);
+  margin-left: 2px;
+  animation: cursorBlink 1.2s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Chatbot scrollbar ─────────────────────────────────── */
+.chatbot-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.chatbot-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chatbot-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 2px;
+}
+.chatbot-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-secondary) transparent;
+}
+
+/* ══════════════════════════════════════════════════════════
+ * Terminal Chatbot Styles
+ * ══════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ─────────────────────────────────────── */
+:root {
+  --terminal-bg: #1a1b26;
+  --terminal-bg-titlebar: #15161e;
+  --terminal-bg-input: #13141c;
+  --terminal-text: #c0caf5;
+  --terminal-text-dim: #9aa5ce;
+  --terminal-cursor: #22d3ee;
+  --terminal-green: #9ece6a;
+  --terminal-cyan: #7dcfff;
+  --terminal-blue: #7aa2f7;
+  --terminal-purple: #bb9af7;
+  --terminal-red: #f7768e;
+  --terminal-yellow: #e0af68;
+  --terminal-orange: #ff9e64;
+  --terminal-comment: #9aa5ce;
+  --terminal-border: #292e42;
+  --terminal-cmd-hover: rgba(122, 162, 247, 0.08);
+  --terminal-divider: #292e42;
+  --terminal-selection: rgba(122, 162, 247, 0.18);
+}
+
+/* Dark mode inherits same values — terminal always dark */
+.dark {
+  --terminal-bg: #1a1b26;
+  --terminal-bg-titlebar: #15161e;
+  --terminal-bg-input: #13141c;
+  --terminal-text: #c0caf5;
+  --terminal-text-dim: #9aa5ce;
+}
+
+/* ── Floating Action Button ────────────────────────────── */
+.terminal-fab {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #1e1f2e 0%, #1a1b26 100%);
+  border: 1px solid rgba(122, 162, 247, 0.35);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(122, 162, 247, 0.08);
+  cursor: pointer;
+}
+.terminal-fab:hover {
+  border-color: rgba(122, 162, 247, 0.55);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 0 20px -6px rgba(122, 162, 247, 0.2);
+  transform: translateY(-1px);
+}
+.terminal-fab--open {
+  border-color: rgba(86, 95, 137, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.terminal-fab--open:hover {
+  border-color: rgba(86, 95, 137, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transform: none;
+}
+.terminal-fab-prompt {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-mono-nav), 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.terminal-fab-chevron {
+  color: #7dcfff;
+}
+.terminal-fab-cursor {
+  color: #7aa2f7;
+  animation: terminal-blink 1.2s step-end infinite;
+}
+
+/* ── Recovery tab (mobile hide/show) ───────────────────── */
+.terminal-recovery-tab {
+  width: 28px;
+  height: 44px;
+  border-radius: 8px 0 0 8px;
+  background: linear-gradient(145deg, #1e1f2e 0%, #1a1b26 100%);
+  border: 1px solid rgba(122, 162, 247, 0.3);
+  border-right: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+.terminal-recovery-tab:active {
+  background: #22243a;
+}
+.terminal-recovery-icon {
+  font-family: var(--font-mono-nav), monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: #7dcfff;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  letter-spacing: 1px;
+}
+
+/* ── Panel ─────────────────────────────────────────────── */
+.terminal-panel {
+  background-color: var(--terminal-bg);
+  border: 1px solid var(--terminal-border);
+  box-shadow:
+    0 25px 60px -12px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(0, 0, 0, 0.15),
+    0 0 40px -10px rgba(122, 162, 247, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono-nav), 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Title bar ─────────────────────────────────────────── */
+.terminal-titlebar {
+  background: linear-gradient(180deg, #1c1d2b 0%, var(--terminal-bg-titlebar) 100%);
+  border-bottom: 1px solid var(--terminal-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-tab-text {
+  color: var(--terminal-text-dim);
+  font-family: var(--font-body), var(--font-mono-nav), monospace;
+  letter-spacing: 0;
+}
+
+.terminal-reset-btn {
+  color: var(--terminal-text-dim);
+}
+.terminal-reset-btn:hover {
+  color: var(--terminal-text);
+  background-color: var(--terminal-cmd-hover);
+}
+
+/* ── Body ──────────────────────────────────────────────── */
+.terminal-body {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(122, 162, 247, 0.03) 0%, transparent 60%),
+    var(--terminal-bg);
+  color: var(--terminal-text);
+  overflow-x: hidden;
+}
+
+/* ── ASCII art ─────────────────────────────────────────── */
+.terminal-ascii {
+  color: var(--terminal-cyan);
+  opacity: 0.75;
+  /* System monospace fonts to guarantee box-drawing chars render correctly */
+  font-family: 'Consolas', 'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace !important;
+}
+
+/* ── Comments (MOTD) ───────────────────────────────────── */
+.terminal-comment {
+  color: var(--terminal-comment);
+  font-family: var(--font-body), var(--font-mono-nav), monospace;
+  font-style: normal;
+  letter-spacing: -0.01em;
+}
+
+/* ── Command suggestions ───────────────────────────────── */
+.terminal-cmd-btn {
+  font-family: var(--font-mono-nav), monospace;
+  color: var(--terminal-text);
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+.terminal-cmd-btn:hover {
+  background-color: var(--terminal-cmd-hover);
+  border-left-color: var(--terminal-cyan);
+}
+
+.terminal-prompt-symbol {
+  color: var(--terminal-green);
+  font-weight: 700;
+}
+
+.terminal-cmd-name {
+  color: var(--terminal-cyan);
+  font-weight: 600;
+}
+
+.terminal-cmd-desc {
+  color: var(--terminal-text-dim);
+  font-size: 11px;
+  font-family: var(--font-body), var(--font-mono-nav), monospace;
+}
+
+.terminal-divider {
+  background: var(--terminal-divider);
+}
+
+/* ── Prompt ────────────────────────────────────────────── */
+.terminal-prompt {
+  font-family: var(--font-mono-nav), monospace;
+  white-space: nowrap;
+}
+
+.terminal-user {
+  color: var(--terminal-green);
+  font-weight: 600;
+}
+
+.terminal-at {
+  color: var(--terminal-text-dim);
+}
+
+.terminal-host {
+  color: var(--terminal-blue);
+  font-weight: 600;
+}
+
+.terminal-colon {
+  color: var(--terminal-text-dim);
+}
+
+.terminal-path {
+  color: var(--terminal-purple);
+  font-weight: 600;
+}
+
+.terminal-dollar {
+  color: var(--terminal-text-dim);
+}
+
+/* ── User input text (see bottom) ─────────────────────── */
+
+/* ── Hash symbol in comments ───────────────────────────── */
+.terminal-hash {
+  font-family: var(--font-mono-nav), monospace;
+  color: var(--terminal-cyan);
+  opacity: 0.7;
+  margin-right: 4px;
+}
+
+/* ── Bot output ────────────────────────────────────────── */
+.terminal-output {
+  color: var(--terminal-text);
+  font-family: var(--font-body), var(--font-mono-nav), monospace;
+  border-left: 2px solid var(--terminal-cyan);
+  margin-left: 2px;
+  padding-left: 10px;
+  letter-spacing: -0.01em;
+  line-height: 1.75;
+}
+
+/* ── Loading spinner ───────────────────────────────────── */
+.terminal-loading {
+  color: var(--terminal-yellow);
+  font-family: var(--font-mono-nav), monospace;
+}
+
+.terminal-loading-text {
+  color: var(--terminal-text-dim);
+  font-family: var(--font-mono-nav), monospace;
+}
+
+/* ── Input area ────────────────────────────────────────── */
+.terminal-input-area {
+  background: linear-gradient(180deg, var(--terminal-bg-input) 0%, #111220 100%);
+  border-top: 1px solid var(--terminal-border);
+}
+
+.terminal-input::placeholder {
+  color: transparent;
+}
+
+/* ── Selection ─────────────────────────────────────────── */
+.terminal-panel ::selection {
+  background: var(--terminal-selection);
+}
+
+/* ── Scrollbar inside terminal ─────────────────────────── */
+.terminal-body.chatbot-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--terminal-border);
+}
+.terminal-body.chatbot-scrollbar {
+  scrollbar-color: var(--terminal-border) transparent;
+}
+
+/* ── Blinking cursor ───────────────────────────────────── */
+.terminal-blink-cursor {
+  animation: terminal-blink 1s step-end infinite;
+  box-shadow: 0 0 4px rgba(34, 211, 238, 0.4);
+}
+
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── User input with Korean ────────────────────────────── */
+.terminal-user-input {
+  font-family: var(--font-body), var(--font-mono-nav), monospace;
+  letter-spacing: -0.01em;
+}
+
+/* ── Korean-aware input ────────────────────────────────── */
+.terminal-input {
+  font-family: var(--font-body), var(--font-mono-nav), monospace;
+  letter-spacing: -0.01em;
+  color: #c0caf5;
+}
