@@ -94,8 +94,32 @@ export default function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading, typingIdx]);
 
+  const scrollPosRef = useRef(0);
+
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
+  }, [isOpen]);
+
+  // Lock background scroll on mobile when chatbot is open
+  useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    if (!isMobile) return;
+    if (isOpen) {
+      scrollPosRef.current = window.scrollY;
+      document.documentElement.style.position = 'fixed';
+      document.documentElement.style.top = `-${scrollPosRef.current}px`;
+      document.documentElement.style.width = '100%';
+    } else {
+      document.documentElement.style.position = '';
+      document.documentElement.style.top = '';
+      document.documentElement.style.width = '';
+      window.scrollTo(0, scrollPosRef.current);
+    }
+    return () => {
+      document.documentElement.style.position = '';
+      document.documentElement.style.top = '';
+      document.documentElement.style.width = '';
+    };
   }, [isOpen]);
 
   // ── Send handler ───────────────────────────────────────
@@ -276,8 +300,7 @@ export default function Chatbot() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9997] sm:hidden touch-none"
-              style={{ touchAction: 'none' }}
+              className="fixed inset-0 z-[9997] sm:hidden"
               onClick={() => setIsOpen(false)}
             />
             <motion.div
@@ -285,7 +308,7 @@ export default function Chatbot() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.96 }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed z-[9998] rounded-xl overflow-hidden flex flex-col terminal-panel sm:bottom-24 sm:right-6 sm:w-[420px] max-sm:bottom-20 max-sm:right-4 max-sm:left-4"
+              className="fixed z-[9998] rounded-xl overflow-hidden flex flex-col terminal-panel sm:bottom-24 sm:right-6 sm:w-[420px] max-sm:bottom-4 max-sm:right-3 max-sm:left-3 max-sm:rounded-lg"
             style={{
               height: 'min(560px, calc(100vh - 140px))',
             }}
@@ -330,10 +353,14 @@ export default function Chatbot() {
                   transition={{ delay: 0.15 }}
                 >
                   {/* ASCII art header */}
-                  <pre className="terminal-ascii text-[14px] leading-[1.3] mb-3 select-none overflow-hidden max-sm:text-[9px] max-sm:leading-[1.1]">
+                  <pre className="terminal-ascii text-[14px] leading-[1.3] mb-3 select-none overflow-hidden hidden sm:block">
 {`╦ ╦╔═╗╔═╗╔╗╔╔═╗╔╦╗  ╔╗ ╔═╗╔╦╗
 ╠═╣╠═╣╠╣ ║║║╠═╣║║║  ╠╩╗║ ║ ║
 ╩ ╩╩ ╩╚═╝╝╚╝╩ ╩╩ ╩  ╚═╝╚═╝ ╩`}
+                  </pre>
+                  <div className="sm:hidden mb-3">
+                    <span className="text-[18px] font-bold tracking-wider" style={{ color: 'var(--terminal-cyan)', fontFamily: "'Consolas', 'SF Mono', monospace" }}>HAENAM BOT</span>
+                  </div>
                   </pre>
 
                   <div className="terminal-motd text-[12px] leading-relaxed mb-4 space-y-1">

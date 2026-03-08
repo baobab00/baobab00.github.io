@@ -604,13 +604,10 @@
 
 /* ── Mobile terminal adjustments ─────────────────────── */
 @media (max-width: 639px) {
-  .terminal-ascii {
-    font-size: 9px !important;
-    line-height: 1.1 !important;
-    overflow: hidden;
-  }
   .terminal-panel {
     overflow: hidden !important;
+    max-height: calc(100vh - 80px) !important;
+    max-height: calc(100dvh - 80px) !important;
   }
   .terminal-input-area {
     overflow: hidden !important;
