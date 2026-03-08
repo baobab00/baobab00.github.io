@@ -600,6 +600,19 @@
   scrollbar-color: var(--terminal-border) transparent;
 }
 
+/* ── Mobile full-screen terminal ─────────────────────── */
+@media (max-width: 639px) {
+  [data-mobile-panel] {
+    height: calc(100vh - 60px) !important;
+    height: calc(100dvh - 60px) !important;
+    border-radius: 0 !important;
+  }
+  .terminal-ascii {
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+  }
+}
+
 /* ── Blinking cursor ───────────────────────────────────── */
 .terminal-blink-cursor {
   animation: terminal-blink 1s step-end infinite;

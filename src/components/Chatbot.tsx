@@ -275,10 +275,11 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-24 right-6 z-[9998] w-[420px] max-w-[calc(100vw-32px)] rounded-xl overflow-hidden flex flex-col terminal-panel"
+            className="fixed bottom-24 right-6 z-[9998] w-[420px] max-w-[calc(100vw-32px)] rounded-xl overflow-hidden flex flex-col terminal-panel sm:bottom-24 sm:right-6 sm:rounded-xl max-sm:bottom-0 max-sm:right-0 max-sm:left-0 max-sm:w-full max-sm:max-w-full max-sm:rounded-none"
             style={{
               height: 'min(560px, calc(100vh - 140px))',
             }}
+            data-mobile-panel
           >
             {/* ── Title bar (macOS-style) ────────────────── */}
             <div className="terminal-titlebar shrink-0 flex items-center px-4 py-2.5 select-none">
