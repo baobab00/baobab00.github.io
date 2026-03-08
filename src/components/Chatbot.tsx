@@ -210,7 +210,7 @@ export default function Chatbot() {
           if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null; }
         }}
         className={`fixed bottom-6 right-6 z-[9999] group transition-all duration-300 ${
-          isHidden && !isOpen ? 'pointer-events-none opacity-0 scale-75' : 'opacity-100 scale-100'
+          isHidden && !isOpen ? 'pointer-events-none opacity-0 scale-75' : isOpen ? 'max-sm:hidden opacity-100 scale-100' : 'opacity-100 scale-100'
         }`}
         whileTap={{ scale: 0.92 }}
         aria-label={isOpen ? '터미널 닫기' : '터미널 열기'}
@@ -276,9 +276,9 @@ export default function Chatbot() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9997] sm:hidden"
+              className="fixed inset-0 z-[9997] sm:hidden touch-none"
+              style={{ touchAction: 'none' }}
               onClick={() => setIsOpen(false)}
-              onTouchMove={(e) => e.preventDefault()}
             />
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -330,7 +330,7 @@ export default function Chatbot() {
                   transition={{ delay: 0.15 }}
                 >
                   {/* ASCII art header */}
-                  <pre className="terminal-ascii text-[14px] leading-[1.3] mb-3 select-none overflow-hidden">
+                  <pre className="terminal-ascii text-[14px] leading-[1.3] mb-3 select-none overflow-hidden max-sm:text-[9px] max-sm:leading-[1.1]">
 {`╦ ╦╔═╗╔═╗╔╗╔╔═╗╔╦╗  ╔╗ ╔═╗╔╦╗
 ╠═╣╠═╣╠╣ ║║║╠═╣║║║  ╠╩╗║ ║ ║
 ╩ ╩╩ ╩╚═╝╝╚╝╩ ╩╩ ╩  ╚═╝╚═╝ ╩`}

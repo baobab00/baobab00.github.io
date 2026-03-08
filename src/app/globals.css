@@ -605,8 +605,8 @@
 /* ── Mobile terminal adjustments ─────────────────────── */
 @media (max-width: 639px) {
   .terminal-ascii {
-    font-size: 10px !important;
-    line-height: 1.15 !important;
+    font-size: 9px !important;
+    line-height: 1.1 !important;
     overflow: hidden;
   }
   .terminal-panel {
