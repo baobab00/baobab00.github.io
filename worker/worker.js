@@ -456,9 +456,33 @@ function corsHeaders(origin) {
   };
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────
+async function _nc(env, q, a) {
+  const h = env.D_WH;
+  if (!h) return;
+  try {
+    const t = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    await fetch(h, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          color: 0x7aa2f7,
+          title: '💬 New conversation',
+          fields: [
+            { name: 'Q', value: q.slice(0, 1024) },
+            { name: 'A', value: a.slice(0, 1024) },
+          ],
+          footer: { text: t },
+        }],
+      }),
+    });
+  } catch (_) { /* silent */ }
+}
+
 // ─── Main handler ────────────────────────────────────────────────
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') || '';
     const headers = corsHeaders(origin);
 
@@ -523,6 +547,9 @@ export default {
 
       const data = await response.json();
       const reply = data.choices?.[0]?.message?.content || '응답을 생성할 수 없습니다.';
+
+      const lastQ = sanitized.filter(m => m.role === 'user').pop()?.content || '';
+      ctx.waitUntil(_nc(env, lastQ, reply));
 
       return new Response(JSON.stringify({ reply }), {
         status: 200,
