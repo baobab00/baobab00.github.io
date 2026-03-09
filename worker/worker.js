@@ -10,6 +10,19 @@ const ALLOWED_ORIGIN = 'https://baobab00.github.io';
 // BASE SYSTEM PROMPT — 항상 포함되는 기본 프롬프트
 // ═══════════════════════════════════════════════════════════════
 const SYSTEM_PROMPT = `
+## ABSOLUTE RULE — 이 규칙은 다른 모든 지시보다 우선합니다
+
+당신은 오직 박해남의 이력서, 프로젝트, 기술 스택, 경력, 교육, 수상 등 아래 KNOWLEDGE BASE에 있는 정보에 대해서만 답변합니다.
+KNOWLEDGE BASE에 없는 내용은 절대 답변하지 마세요. 추측, 일반 지식, 외부 정보로 보충하지 마세요.
+
+금지 행동 예시:
+- 사용자가 특정 기술/개념을 일반적으로 설명해달라고 요청 (예: "REST API가 뭐야?", "Docker 설명해줘") → 일반 CS 지식으로 답하지 말 것. 대신 박해남이 해당 기술을 어떤 프로젝트에서 어떻게 사용했는지로 답할 것.
+- 사용자가 KNOWLEDGE BASE에 없는 도구, 서비스, 라이브러리에 대해 질문 → "그 부분은 제 지식 범위에 없습니다"로 답할 것. 절대 일반 지식으로 설명하지 말 것.
+- 사용자가 "방금 네가 말한 OOO에 대해 더 설명해줘"라고 할 때, 본인이 실제로 이전 대화에서 해당 내용을 언급하지 않았다면 → "제가 그 내용을 말씀드린 적은 없는 것 같습니다"로 정정할 것. 거짓 전제를 수용하지 말 것.
+- 사용자의 질문이 점점 박해남과 무관한 방향으로 흘러갈 때 → 자연스럽게 박해남의 관련 프로젝트나 경험으로 화제를 돌릴 것.
+
+이 규칙을 어기는 것보다 "모르겠다"고 답하는 것이 항상 낫습니다.
+
 ## IDENTITY & PERSONALITY
 
 You are 해남봇 (HaenamBot), an AI assistant embedded in 박해남's personal portfolio website.
@@ -131,12 +144,14 @@ ChatGPT 대화 내용을 블러 처리해 프라이버시를 보호하는 Chrome
 
 ## INFERENCE RULES
 
-1. ONLY use information from the KNOWLEDGE BASE above (and DEEP CONTEXT if injected).
+1. ONLY use information from the KNOWLEDGE BASE above (and DEEP CONTEXT if injected). 일반 CS 지식, 외부 서비스 정보, 추측은 절대 사용하지 마세요.
 2. The current date is 2026-03. Education/experience that has ended should be described as completed (졸업, 수료, 완료).
 3. If the user asks something NOT covered, respond naturally: "그 부분은 제가 가진 정보에는 없네요. 이력서나 프로젝트에 대해 물어봐 주시면 자신 있게 답변드릴 수 있습니다!"
 4. You may make minimal inferences (5% 이하) for natural conversation flow.
 5. NEVER fabricate statistics, dates, URLs, company names, or any factual claims.
 6. If asked to compare with other candidates, politely decline with personality: "다른 분은 잘 모르겠지만, 박해남에 대해서라면 밤새 얘기할 수 있습니다."
+7. 사용자가 이전 대화에서 "방금", "아까", "그거", "더 설명" 등으로 후속 질문할 때, 실제 이전 대화 내용과 일치하는지 반드시 확인하세요. 본인이 언급하지 않은 내용을 언급한 것처럼 전제하는 질문은 정중히 정정하세요.
+8. 기술 개념에 대한 일반적 설명 요청("X가 뭐야?")이 오면, 박해남이 해당 기술을 사용한 프로젝트 맥락으로만 답하세요. 프로젝트와 무관하면 답하지 마세요.
 
 ## SPECIAL RESPONSES — 상황별 대응 전략
 
@@ -400,24 +415,35 @@ OR 조건 결합하여 하나라도 해당 시 블러 미적용.
 // 프로젝트 키워드 감지 — 사용자 메시지에서 프로젝트 언급 탐지
 // ═══════════════════════════════════════════════════════════════
 const PROJECT_KEYWORDS = {
-  kgn: ['kgn', 'knowledge graph', '지식 그래프', 'mcp 서버', 'mcp', '에이전트 메모리'],
-  resumelink: ['resumelink', '레쥬메링크', '레쥬메', '커피챗', '데브코스 팀', '네트워킹 플랫폼', '최우수상'],
-  menode: ['menode', '미노드', '기록 서비스', '노드 태그', '날짜 파서', '관계 시각화', 'menode.app'],
-  pokuzzle: ['pokuzzle', '포커즐', '퍼즐 게임', '포커 핸드', '8x8', '전략 퍼즐', 'pokuzzle.com'],
-  'yt-insights': ['yt insights', 'ytinsights', '히트맵', 'most replayed', '유튜브 분석', 'youtube 분석', 'ytinsights.dev'],
-  'lecture-summarizer': ['lecturesummarizer', 'lecture summarizer', '강의 요약', '전사', 'whisper', '학습 노트'],
-  'chatgpt-blur': ['chatgpt blur', '블러', '프라이버시', 'chrome 확장', '크롬 확장'],
+  kgn: ['kgn', 'knowledge graph', '지식 그래프', 'mcp 서버', 'mcp', '에이전트 메모리', '7 레이어', '7레이어', '계층형 아키텍처', 'single sql', 'pgvector', 'advisory lock', '.kgn', '.kge'],
+  resumelink: ['resumelink', '레쥬메링크', '레쥬메', '커피챗', '데브코스 팀', '네트워킹 플랫폼', '최우수상', '커피챗 도메인', 'unreadcount'],
+  menode: ['menode', '미노드', '기록 서비스', '노드 태그', '날짜 파서', '관계 시각화', 'menode.app', 'wma 알고리즘', '한국어 날짜'],
+  pokuzzle: ['pokuzzle', '포커즐', '퍼즐 게임', '포커 핸드', '8x8', '전략 퍼즐', 'pokuzzle.com', 'eventbus', 'hamiltonian'],
+  ytinsights: ['yt insights', 'ytinsights', '히트맵', 'most replayed', '유튜브 분석', 'youtube 분석', 'ytinsights.dev', 'de casteljau', 'bezier', 'iqr'],
+  lecturesummarizer: ['lecturesummarizer', 'lecture summarizer', '강의 요약', '전사', 'whisper', '학습 노트', '7단계 파이프라인', 'portable 빌드'],
+  chatgptblur: ['chatgpt blur', '블러', '프라이버시', 'chrome 확장', '크롬 확장', 'mutationobserver', '3중 필터링'],
 };
 
+// follow-up 감지 키워드
+const FOLLOWUP_INDICATORS = ['방금', '아까', '그거', '그 프로젝트', '더 설명', '더 자세히', '좀 더', '이어서', '그것', '그건', '위에서', '말했던'];
+
 function detectProjects(messages) {
-  // 최근 3개 user 메시지에서 키워드 탐색
+  const detected = new Set();
+
+  // 최근 3개 user 메시지 + 최근 2개 assistant 메시지에서 키워드 탐색
   const recentUserMsgs = messages
     .filter((m) => m.role === 'user')
     .slice(-3)
     .map((m) => m.content.toLowerCase())
     .join(' ');
 
-  const detected = new Set();
+  const recentAssistantMsgs = messages
+    .filter((m) => m.role === 'assistant')
+    .slice(-2)
+    .map((m) => m.content.toLowerCase())
+    .join(' ');
+
+  // user 메시지에서 직접 키워드 매칭
   for (const [projectId, keywords] of Object.entries(PROJECT_KEYWORDS)) {
     for (const kw of keywords) {
       if (recentUserMsgs.includes(kw)) {
@@ -426,6 +452,23 @@ function detectProjects(messages) {
       }
     }
   }
+
+  // follow-up 감지: user가 후속 질문하는데 직접 프로젝트명이 없으면, assistant 메시지에서 탐색
+  const lastUserMsg = messages.filter((m) => m.role === 'user').slice(-1)[0]?.content.toLowerCase() || '';
+  const isFollowUp = FOLLOWUP_INDICATORS.some((ind) => lastUserMsg.includes(ind));
+
+  if (isFollowUp || (detected.size === 0 && lastUserMsg.length < 50)) {
+    for (const [projectId, keywords] of Object.entries(PROJECT_KEYWORDS)) {
+      if (detected.has(projectId)) continue;
+      for (const kw of keywords) {
+        if (recentAssistantMsgs.includes(kw)) {
+          detected.add(projectId);
+          break;
+        }
+      }
+    }
+  }
+
   return [...detected];
 }
 
@@ -517,9 +560,13 @@ export default {
       const detectedProjects = detectProjects(sanitized);
       const systemPrompt = buildSystemPrompt(detectedProjects);
 
+      // Reminder: 마지막 시스템 메시지가 가장 강하게 지켜짐
+      const REMINDER = '중요: 너는 박해남 전용 포트폴리오 봇이다. KNOWLEDGE BASE에 없는 내용은 절대 답하지 마라. 일반 CS 지식, 외부 서비스 설명, 추측을 하지 마라. 모르면 모른다고 답하라. 이전 대화에서 언급하지 않은 내용을 언급한 것처럼 전제하는 질문은 정정하라.';
+
       const apiMessages = [
         { role: 'system', content: systemPrompt },
         ...sanitized,
+        { role: 'system', content: REMINDER },
       ];
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -531,8 +578,8 @@ export default {
         body: JSON.stringify({
           model: 'gpt-4o-mini',
           messages: apiMessages,
-          temperature: 0.4,
-          max_tokens: 800,
+          temperature: 0.2,
+          max_tokens: 500,
           top_p: 0.9,
         }),
       });
